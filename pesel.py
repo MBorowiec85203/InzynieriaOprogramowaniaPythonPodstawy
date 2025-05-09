@@ -28,10 +28,12 @@ def verify_pesel(pesel: str) -> int:
     Returns:
         int: 1 jeśli numer jest poprawny, 0 jeśli nie.
     """
-    ### TUTAJ PODAJ ROZWIĄZANIE ZADANIA
+    wspolczynniki_wagowe = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
+    suma_liczb = sum(int(pesel[i]) * wspolczynniki_wagowe[i] for i in range(10))
+    liczba_kontrolna = (10 - (suma_liczb % 10)) % 10
 
     ### return 0 - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return 0
+    return 0 if liczba_kontrolna != 0 else 1
 
 
 # Przykładowe wywołanie:

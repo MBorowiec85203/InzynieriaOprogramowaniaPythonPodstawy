@@ -19,6 +19,23 @@ Wymagania:
 - Implementacja funkcji `check_parentheses(s: str) -> bool`.
 - Użycie stosu do weryfikacji poprawności nawiasów.
 """
+#Zdefiniowanie stosu
+class Stack:
+    def __init__(self):
+        self.stack = []
+#Dodawanie elementów do stosu
+    def push(self, znak):
+        self.stack.append(znak)
+#Zdejmowanie elementów ze stosu
+    def pop(self):
+        if not self.is_empty():
+            return self.stack.pop()
+#Sprawdzenie czy stos jest pusty
+    def is_empty(self):
+        if len(self.stack) == 0:
+            return True
+        else:
+            return False
 
 def check_parentheses(s: str) -> bool:
     """
@@ -30,10 +47,21 @@ def check_parentheses(s: str) -> bool:
     Returns:
         bool: True jeśli nawiasy są poprawne, False w przeciwnym wypadku.
     """
-    ### TUTAJ PODAJ ROZWIĄZANIE ZADANIA
+    stos_lifo = Stack()
+    for char in s:
+        if char == "(":
+            stos_lifo.push(char) #Jeśli program otrzyma nawias otwierający, doda go do stosu
+        elif char == ")": #Jeżeli program otrzyma nawias zamykający, musi sprawdzić czy na stosie jest już nawias otwierający, a więc czy stos nie jest pusty
+            if stos_lifo.is_empty():
+                return False #Jeśli stos jest pusty, to znaczy, że pierwszym elementem nie był nawias otwierający
+            stos_lifo.pop() #Jeśli stos nie był pusty, to program zdejmuje nawias otwierający ze stosu
+    if stos_lifo.is_empty():
+        return True
+    else:
+        return False
 
     ### return False - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return False
+
 
 # Przykładowe wywołanie:
 if __name__ == "__main__":

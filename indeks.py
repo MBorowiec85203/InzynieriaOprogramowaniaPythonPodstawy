@@ -47,11 +47,52 @@ def index_documents(documents: list[str], queries: list[str]) -> list[list[int]]
     Returns:
         list[list[int]]: Lista wyników dla kolejnych zapytań.
     """
-    ### TUTAJ PODAJ ROZWIĄZANIE ZADANIA
+#Stworzenie listy, do której będą dodawane przetworzone teksty (ignorując interpunkcję i wielkość liter)
+    processed_text = []
+    for document in documents:
+        clean_document = ""
+        for char in document:
+            if char.isalpha() or char == ' ':
+                clean_document += char.lower() #Jeśli znak to litera lub spacja program doda go do przetworzonych tekstów, zmieniając litery na małe
+            else:
+                clean_document += ' ' #Jeśli znak nie jest literą lub spacją, program zmieni go w spację aby wyrazy się ze sobą nie złączały
+        processed_text.append(clean_document)
 
-    ### return [[]] - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return [[]]
+#Stworzenie listy, do której będą dodawane słowniki z wynikami zliczania słów
+    word_count = []
+    for document in processed_text:
+        words = document.split()
+        count = {}
+        for word in words:
+            if word in count:
+                count[word] += 1 #Jeśli słowo wystąpiło już w słowniku count, licznik zwiększy się o 1
+            else:
+                count[word] = 1 #Jeśli słowo jeszcze nie wystąpiło, otrzyma numer 1
+        word_count.append(count)
 
+
+#Zapisywanie wyników dla zapytania
+    results = []
+    for query in queries:
+        query = query.lower() #Zmiana liter na małe w razie gdyby użytkownik użył dużych
+        documents_count = []
+        for i in range(len(word_count)):
+            if query in word_count[i]:
+                documents_count.append((i, word_count[i][query]))
+
+#Sortowanie malejąco
+        def sortowanie(pair):
+            document_number, occurrences = pair
+            return(-occurrences, -document_number)
+        documents_count.sort(key=sortowanie)
+
+#Wyniki
+        result = []
+        for pair in documents_count:
+            result.append(pair[0])
+        results.append(result)
+    return results
+### return [[]] - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
 
 # Przykładowe wywołanie:
 if __name__ == "__main__":

@@ -33,10 +33,13 @@ def verify_pesel(pesel: str) -> int:
     liczba_kontrolna = (10 - (suma_liczb % 10)) % 10
 
     ### return 0 - powinno być zmienione i zwrócić prawdziwy wynik (zgodny z oczekiwaniami)
-    return 0 if liczba_kontrolna != 0 else 1
+    if liczba_kontrolna == int(pesel[10]):
+        return 1
+    else:
+        return 0
 
 
 # Przykładowe wywołanie:
 if __name__ == "__main__":
-    pesel_input = "97082123152"
+    pesel_input = str(input("Podaj swój numer PESEL: "))
     print(verify_pesel(pesel_input))  # Oczekiwane wyjście: 0
